@@ -1,5 +1,6 @@
 describe("Render document", function () {
   const tests = [
+    'text-box',
     'text',
     'underlines',
     'text-break',
@@ -48,5 +49,5 @@ describe("Render document", function () {
 });
 
 function formatHTML(text) {
-  return text.replace(/\t+|\s+/ig, ' ').replace(/></ig, '>\n<');
+  return text.replace(/\t+|\s+/ig, ' ').replace(/></ig, '>\n<').trim();
 }

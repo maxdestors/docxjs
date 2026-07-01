@@ -129,7 +129,7 @@
 
         const selectedTest = new URLSearchParams(location.search).get('test');
 
-        for (let testName of ['text','underlines','text-break','line-spacing','numbering','page-layout','table','table-spans','footnote','header-footer','revision','equation'])
+        for (let testName of ['text','underlines','text-break','text-box','line-spacing','numbering','page-layout','table','table-spans','footnote','header-footer','revision','equation'])
         {
             var op = document.createElement("option");
             op.value = testName;
