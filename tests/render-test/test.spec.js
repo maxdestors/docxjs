@@ -1,6 +1,5 @@
 describe("Render document", function () {
   const tests = [
-    'text-box',
     'text',
     'underlines',
     'text-break',
@@ -11,7 +10,10 @@ describe("Render document", function () {
     'line-spacing',
     'header-footer',
     'footnote',
-    'equation'
+    'equation',
+    'text-box',
+    'text-box-wps',
+    'image',
   ];
 
   for (let path of tests) {
@@ -49,5 +51,9 @@ describe("Render document", function () {
 });
 
 function formatHTML(text) {
-  return text.replace(/\t+|\s+/ig, ' ').replace(/></ig, '>\n<').trim();
+  return text
+    .replace(/src="blob:[^"]+"/ig, 'src="blob:__dynamic__"')
+    .replace(/\t+|\s+/ig, ' ')
+    .replace(/></ig, '>\n<')
+    .trim();
 }
