@@ -31,9 +31,13 @@ describe("Render document", function () {
       const actual = formatHTML(div.innerHTML);
       const expected = formatHTML(resultText);
 
-      expect(actual).toBe(expected);
-
       if(actual != expected) {
+        const mismatch = findFirstMismatch(expected, actual);
+
+        console.log(`[first diff @ ${mismatch.index}]`);
+        console.log(`[expected] ${JSON.stringify(mismatch.expected)}`);
+        console.log(`[actual]   ${JSON.stringify(mismatch.actual)}`);
+
         const diffs = Diff.diffLines(expected, actual);
 
         for(const diff of diffs) {
@@ -45,6 +49,8 @@ describe("Render document", function () {
         }
       }
 
+      expect(actual).toBe(expected);
+
       div.remove();
     });
   }
@@ -54,6 +60,36 @@ function formatHTML(text) {
   return text
     .replace(/src="blob:[^"]+"/ig, 'src="blob:__dynamic__"')
     .replace(/\t+|\s+/ig, ' ')
+    .replace(/<style>\s+/ig, '<style>')
+    .replace(/\s+<\/style>/ig, '</style>')
+    .replace(/\{\}/ig, '{ }')
+    .replace(/>\s+</ig, '><')
     .replace(/></ig, '>\n<')
     .trim();
+}
+
+function findFirstMismatch(expected, actual) {
+  const max = Math.min(expected.length, actual.length);
+
+  for(let i = 0; i < max; i++) {
+    if(expected[i] !== actual[i]) {
+      return {
+        index: i,
+        expected: snippetAt(expected, i),
+        actual: snippetAt(actual, i),
+      };
+    }
+  }
+
+  return {
+    index: max,
+    expected: snippetAt(expected, max),
+    actual: snippetAt(actual, max),
+  };
+}
+
+function snippetAt(text, index, radius = 80) {
+  const start = Math.max(0, index - radius);
+  const end = Math.min(text.length, index + radius);
+  return text.slice(start, end);
 }
