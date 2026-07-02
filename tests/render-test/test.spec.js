@@ -34,19 +34,9 @@ describe("Render document", function () {
       if(actual != expected) {
         const mismatch = findFirstMismatch(expected, actual);
 
-        console.log(`[first diff @ ${mismatch.index}]`);
-        console.log(`[expected] ${JSON.stringify(mismatch.expected)}`);
-        console.log(`[actual]   ${JSON.stringify(mismatch.actual)}`);
+        console.log(`[-] ${JSON.stringify(mismatch.expected)}`);
+        console.log(`[+] ${JSON.stringify(mismatch.actual)}`);
 
-        const diffs = Diff.diffLines(expected, actual);
-
-        for(const diff of diffs) {
-          if(diff.added)
-            console.log('[+] ' + diff.value);
-
-          if(diff.removed)
-            console.log('[-] ' + diff.value);
-        }
       }
 
       expect(actual).toBe(expected);
